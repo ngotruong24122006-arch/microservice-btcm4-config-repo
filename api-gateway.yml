@@ -1,0 +1,7 @@
+# Cấu hình riêng của api-gateway.
+# Định tuyến nằm trong GatewayRoutesConfig (lb://<service-id> qua Eureka),
+# jwt.secret lấy từ application.yml dùng chung (trùng với identity-service).
+logging:
+  level:
+    org.springframework.cloud.gateway: INFO
+    com.example.gatewayservice: INFO

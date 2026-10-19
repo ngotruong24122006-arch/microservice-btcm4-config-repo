@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/emr_db
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:123456}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: false
+  kafka:
+    consumer:
+      group-id: emr-service
+
+app:
+  emr:
+    # Khóa AES-256 (Base64 của đúng 32 byte). Khóa mặc định dưới đây CHỈ dùng cho môi trường học tập;
+    # khi triển khai thật phải đặt biến môi trường EMR_ENCRYPTION_KEY.
+    encryption-key: ${EMR_ENCRYPTION_KEY:tmPHIScxTFJecU7OwsDIDiY1dcSyqY+xB67acIPP18c=}

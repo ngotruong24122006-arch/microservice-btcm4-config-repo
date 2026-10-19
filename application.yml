@@ -1,0 +1,46 @@
+# Cấu hình CHUNG cho mọi microservice (Config Server phục vụ file này cho tất cả ứng dụng).
+# Cấu hình riêng từng service nằm trong <ten-service>.yml (datasource, kafka group-id, app.*).
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
+  instance:
+    prefer-ip-address: true
+
+spring:
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: earliest
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
+# JWT: chỉ identity-service (ký token) và api-gateway (xác thực token) dùng.
+jwt:
+  secret: ${JWT_SECRET:telehealth-jwt-secret-dc49fb1c7777422b2ef40949c6af20511322019d40b493fee4820874a668f99b}
+  # Thời hạn access token (ms): 15 phút
+  expiration: ${JWT_EXPIRATION:900000}
+  # Thời hạn refresh token (ms): 7 ngày
+  refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800000}
+
+# Secret nội bộ: API Gateway gắn vào request chuyển xuống service, các service từ chối header X-Auth-* nếu thiếu secret này.
+# Khi triển khai thật phải đổi (biến môi trường INTERNAL_SECRET).
+internal:
+  secret: ${INTERNAL_SECRET:telehealth-internal-4f9c1a7e2b6d4e0f8a3c5b7d9e1f2a4c}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always

@@ -1,0 +1,24 @@
+# Cấu hình riêng của appointment-service
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/appointment_db
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:123456}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: false
+  kafka:
+    consumer:
+      group-id: appointment-service
+
+app:
+  appointment:
+    # Thời gian giữ chỗ chờ thanh toán (phút)
+    hold-minutes: 15
+    # Chu kỳ quét lịch quá hạn (ms)
+    expire-scan-ms: 60000
+
